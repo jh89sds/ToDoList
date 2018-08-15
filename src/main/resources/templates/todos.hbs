@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>스프링부트 웹서비스</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--부트스트랩 css 추가-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<h1>TODO 목록 조회</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">할 일</th>
+        <th scope="col">작성일시</th>
+        <th scope="col">최종수정일시</th>
+    </tr>
+    </thead>
+    <tbody>
+        {{#each toDos}}
+            <tr>
+                <th scope="row">{{id}}</th>
+                <td>{{whatToDo}}</td>
+                <td>{{registerDate}}</td>
+                <td>{{lastUpdateDate}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+<!--부트스트랩 js, jquery 추가-->
+<script
+        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</body>
+</html>
