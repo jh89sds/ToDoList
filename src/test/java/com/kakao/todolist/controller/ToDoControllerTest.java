@@ -68,7 +68,7 @@ public class ToDoControllerTest extends ControllerTest {
 
         when(toDoService.createToDo(ArgumentMatchers.any(ToDoWithParents.class))).thenReturn(outputToDo);
 
-        MvcResult mvcResult = mvc.perform(put("/api/todos")
+        MvcResult mvcResult = mvc.perform(post("/api/todos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(asJsonString(toDoWithParents)))
@@ -86,6 +86,14 @@ public class ToDoControllerTest extends ControllerTest {
     }
 
     @Test
+    public void whenUpdateWhatToDo_thenCallUpdateWhatToDo() throws Exception {
+        mvc.perform(put("/api/todos/1/new"))
+                .andExpect(status().isResetContent());
+
+        verify(toDoService).updateWhatToDo(1, "new");
+    }
+
+    @Test
     public void whenDeleteToDo_thenCallDeleteToDo() throws Exception {
         mvc.perform(delete("/api/todos/1"))
                 .andExpect(status().isAccepted());
@@ -99,5 +107,21 @@ public class ToDoControllerTest extends ControllerTest {
                 .andExpect(status().isOk());
 
         verify(toDoService).getToDo(1);
+    }
+
+    @Test
+    public void whenCheckAllDone_thenCallIsLinedAllDone() throws Exception {
+        mvc.perform(get("/api/todos/1/checkalldone"))
+                .andExpect(status().isOk());
+
+        verify(toDoService).isLinkedAllDone(1);
+    }
+
+    @Test
+    public void whenDoneToDo_thenCalldoneToDo() throws Exception {
+        mvc.perform(put("/api/todos/1/done"))
+                .andExpect(status().isResetContent());
+
+        verify(toDoService).doneToDo(1);
     }
 }

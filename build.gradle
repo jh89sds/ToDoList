@@ -32,4 +32,5 @@ dependencies {
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
     compile group: 'pl.allegro.tech.boot', name: 'handlebars-spring-boot-starter', version: '0.3.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.14.0'
 }

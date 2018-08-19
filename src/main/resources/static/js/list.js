@@ -19,7 +19,7 @@ var list = {
     },
     doneToDo(id) {
         var xhr = new XMLHttpRequest()
-        this.request(xhr, 'POST', '/api/todos/' + id + '/done',
+        this.request(xhr, 'PUT', '/api/todos/' + id + '/done',
             function() {
                 location.reload()
             })

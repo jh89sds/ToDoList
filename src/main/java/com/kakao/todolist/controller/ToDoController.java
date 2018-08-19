@@ -29,7 +29,7 @@ public class ToDoController {
     }
 
     @ApiOperation(value = "할일 생성")
-    @PutMapping
+    @PostMapping
     public ResponseEntity<ToDo> createToDo(@RequestBody ToDoWithParents toDoWithParents) throws ToDoException {
         ToDo returnToDo = toDoService.createToDo(toDoWithParents);
         return new ResponseEntity<>(returnToDo, HttpStatus.CREATED);
@@ -40,7 +40,7 @@ public class ToDoController {
             @ApiImplicitParam(name = "toDoId", value = "변경할 할일 ID", required = true, dataType = "int", paramType = "path", defaultValue = "1"),
             @ApiImplicitParam(name = "whatToDo", value = "변경할 할일 ID", required = true, dataType = "string", paramType = "path", defaultValue = "새로운 할 일"),
     })
-    @PostMapping("/{toDoId}/{whatToDo}")
+    @PutMapping("/{toDoId}/{whatToDo}")
     public ResponseEntity<Void> updateWhatToDo(@PathVariable Integer toDoId, @PathVariable String whatToDo) throws ToDoException {
         toDoService.updateWhatToDo(toDoId, whatToDo);
         return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
@@ -79,7 +79,7 @@ public class ToDoController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "toDoId", value = "완료할 할일 ID", required = true, dataType = "int", paramType = "path", defaultValue = "3"),
     })
-    @PostMapping("/{toDoId}/done")
+    @PutMapping("/{toDoId}/done")
     public ResponseEntity<Void> doneToDo(@PathVariable Integer toDoId) throws ToDoException {
         toDoService.doneToDo(toDoId);
         return new ResponseEntity<>(HttpStatus.RESET_CONTENT);

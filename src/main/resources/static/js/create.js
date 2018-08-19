@@ -46,7 +46,7 @@ var create = {
         }
 
         var xhr = new XMLHttpRequest()
-        this.request(xhr, 'PUT', '/api/todos',
+        this.request(xhr, 'POST', '/api/todos',
             function() {
                 $('#createDone').modal('show')
             },

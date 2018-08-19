@@ -1,8 +1,10 @@
 var hostUrl = ''
+var toDoId = ''
 
 var update = {
     init() {
         hostUrl = $('#host-url').text()
+        toDoId = location.pathname.split('/')[3]
         var _this = this
         $('#updateToDo').on('click', function() {
             _this.save()
@@ -25,6 +27,31 @@ var update = {
         $('#confirmLinkedToDo').on('click', function() {
             location.reload()
         })
+        $('#isProgress').on('click', function() {
+            _this.checkLinkedAllDone()
+        })
+        $('#done-action').on('click', function() {
+            _this.doneToDo()
+        })
+    },
+    doneToDo() {
+        var xhr = new XMLHttpRequest()
+        this.request(xhr, 'PUT', '/api/todos/' + toDoId + '/done',
+            function() {
+                location.reload()
+            })
+    },
+    checkLinkedAllDone() {
+        var xhr = new XMLHttpRequest()
+        this.request(xhr, 'GET', '/api/todos/' + toDoId + '/checkalldone',
+            function() {
+                if(xhr.response == 'false') {
+                    $('#inform-all-done').modal('show')
+                } else {
+                    $('#check-done').modal('show')
+                }
+            }
+        )
     },
     save() {
         var whatToDo = $('#whatToDo').val()
@@ -34,7 +61,7 @@ var update = {
         }
         var id = location.pathname.split('/')[3]
         var xhr = new XMLHttpRequest();
-        this.request(xhr, 'POST', '/api/todos/' + id + '/' + whatToDo,
+        this.request(xhr, 'PUT', '/api/todos/' + id + '/' + whatToDo,
             function() {
                 $('#updateDone').modal('show')
             })
