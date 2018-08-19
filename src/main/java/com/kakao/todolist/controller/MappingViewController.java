@@ -4,6 +4,9 @@ import com.kakao.todolist.common.ToDoException;
 import com.kakao.todolist.entity.PageInfo;
 import com.kakao.todolist.entity.ToDo;
 import com.kakao.todolist.service.ToDoService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -27,6 +30,10 @@ public class MappingViewController {
     @Value("${todolist.host.url}")
     private String hostUrl;
 
+    @ApiOperation(value = "할일 목록 조회 화면")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNo", value = "조회할 페이지", required = true, dataType = "int", paramType = "path", defaultValue = "1"),
+    })
     @GetMapping("/{pageNo}")
     public String getToDos(Model model, @PathVariable int pageNo) {
         PageRequest request = PageRequest.of(pageNo - 1, 10, Sort.Direction.ASC, "id");
@@ -49,6 +56,10 @@ public class MappingViewController {
         return "list";
     }
 
+    @ApiOperation(value = "수정 화면")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "toDoId", value = "수정할 할일 id", required = true, dataType = "int", paramType = "path", defaultValue = "1"),
+    })
     @GetMapping("/todo/{toDoId}")
     public String updateToDoView(Model model, @PathVariable int toDoId) throws ToDoException {
         model.addAttribute("toDo", toDoService.getToDo(toDoId));
@@ -58,6 +69,7 @@ public class MappingViewController {
         return "update";
     }
 
+    @ApiOperation(value = "등록 화면")
     @GetMapping("/todo/create")
     public String createToDoView(Model model) {
         model.addAttribute("toDos", toDoService.progressingToDos());

@@ -13,6 +13,7 @@ public class ToDo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(columnDefinition="VARCHAR(80)")
     private String whatToDo;
 
     private LocalDateTime registerDate;
@@ -21,6 +22,7 @@ public class ToDo {
 
     private boolean isProgress;
 
+    @Column(columnDefinition="VARCHAR(100)")
     private String whatToDoWithLink;
 
     public int getId() {

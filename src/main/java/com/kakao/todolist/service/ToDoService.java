@@ -52,12 +52,13 @@ public class ToDoService {
         }
     }
 
-    public ToDo saveToDo(ToDoWithParents toDoWithParents) throws ToDoException {
+    public ToDo createToDo(ToDoWithParents toDoWithParents) throws ToDoException {
         ToDo toDo = toDoWithParents.getToDo();
         List<Integer> parents = toDoWithParents.getParents();
         try {
             toDo.setWhatToDoWithLink(toDo.getWhatToDo());
             toDo.setRegisterDate(LocalDateTime.now());
+            toDo.setIsProgress(true);
             ToDo savedToDo = toDoRepository.save(toDo);
 
             return customizeToDoColumnWithLinkSave(parents, savedToDo);
@@ -80,7 +81,7 @@ public class ToDoService {
     public boolean isLinkedAllDone(int toDoId) {
         List<ParentMapping> linkedMappings = parentMappingRepository.findByParentId(toDoId);
         List<ParentMapping> progressList = linkedMappings.stream()
-                .filter(linkedMapping -> linkedMapping.getIsProgress())
+                .filter(ParentMapping::getIsProgress)
                 .collect(Collectors.toList());
 
         return progressList.size() == 0;

@@ -122,14 +122,14 @@ public class ToDoServiceTest {
         toDoWithParents.setToDo(inputToDo);
         toDoWithParents.setParents(Lists.newArrayList());
 
-        ToDo toDo = subject.saveToDo(toDoWithParents);
+        ToDo toDo = subject.createToDo(toDoWithParents);
 
         verify(toDoRepository).save(inputToDo);
         assertEquals(1, toDo.getId());
     }
 
     @Test
-    public void whenSaveToDoWithParents_thenSave() throws ToDoException {
+    public void whenCreateToDoWithParents_thenCreate() throws ToDoException {
         ToDo savedToDo = new ToDo();
         savedToDo.setId(1);
         savedToDo.setIsProgress(true);
@@ -151,7 +151,7 @@ public class ToDoServiceTest {
         when(toDoRepository.findById(2)).thenReturn(Optional.of(parent1));
         when(toDoRepository.findById(3)).thenReturn(Optional.of(parent2));
 
-        subject.saveToDo(toDoWithParents);
+        subject.createToDo(toDoWithParents);
 
         ArgumentCaptor argumentCaptor = ArgumentCaptor.forClass(ToDo.class);
         verify(toDoRepository, times(2)).save(((ToDo) argumentCaptor.capture()));

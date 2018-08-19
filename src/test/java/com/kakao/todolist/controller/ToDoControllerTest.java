@@ -66,7 +66,7 @@ public class ToDoControllerTest extends ControllerTest {
         ToDo outputToDo = new ToDo();
         outputToDo.setId(1);
 
-        when(toDoService.saveToDo(ArgumentMatchers.any(ToDoWithParents.class))).thenReturn(outputToDo);
+        when(toDoService.createToDo(ArgumentMatchers.any(ToDoWithParents.class))).thenReturn(outputToDo);
 
         MvcResult mvcResult = mvc.perform(put("/api/todos")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -78,7 +78,7 @@ public class ToDoControllerTest extends ControllerTest {
         assertThat(mvcResult.getResponse().getContentAsString(), containsString("\"id\":1"));
 
         ArgumentCaptor captor = ArgumentCaptor.forClass(ToDo.class);
-        verify(toDoService).saveToDo(((ToDoWithParents) captor.capture()));
+        verify(toDoService).createToDo(((ToDoWithParents) captor.capture()));
 
         ToDoWithParents argumentValue = (ToDoWithParents) captor.getValue();
         assertThat(argumentValue.getToDo().getWhatToDo(), is("가사일"));
