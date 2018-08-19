@@ -4,7 +4,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -20,14 +19,9 @@ public class ToDo {
 
     private LocalDateTime lastUpdateDate;
 
-    private String status;
+    private boolean isProgress;
 
-    @ElementCollection
-    @CollectionTable(
-            name="REFERENCE",
-            joinColumns=@JoinColumn(name="PARENT_ID")
-    )
-    private List<Reference> references;
+    private String whatToDoWithLink;
 
     public int getId() {
         return id;
@@ -61,19 +55,27 @@ public class ToDo {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean getIsProgress() {
+        return isProgress;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setIsProgress(boolean isProgress) {
+        this.isProgress = isProgress;
     }
 
-    public List<Reference> getReferences() {
-        return references;
+    public boolean isProgress() {
+        return isProgress;
     }
 
-    public void setReferences(List<Reference> references) {
-        this.references = references;
+    public void setProgress(boolean progress) {
+        isProgress = progress;
+    }
+
+    public String getWhatToDoWithLink() {
+        return whatToDoWithLink;
+    }
+
+    public void setWhatToDoWithLink(String whatToDoWithLink) {
+        this.whatToDoWithLink = whatToDoWithLink;
     }
 }

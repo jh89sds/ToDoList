@@ -58,4 +58,17 @@ public class ToDoExceptionHandlerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(ExceptionCase.DELETE_FAIL, response.getBody());
     }
+
+    @Test
+    public void whenLinkedToDoIsNotDone_thenShowLinkedDoneHaveToDoMessage() {
+        ToDoException toDoException = new ToDoException("TODO ID : " + 1, ExceptionCase.LINKED_NOT_DONE);
+
+        ResponseEntity<ExceptionCase> response = subject.handleException(toDoException);
+
+        verify(subject.logger).error("TODO ID : " + 1);
+        verify(subject.logger).error("Linked ToDo is not done. Please check linked ToDo");
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ExceptionCase.LINKED_NOT_DONE, response.getBody());
+    }
 }

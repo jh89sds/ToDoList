@@ -2,6 +2,7 @@ package com.kakao.todolist.controller;
 
 import com.kakao.todolist.common.ToDoException;
 import com.kakao.todolist.entity.ToDo;
+import com.kakao.todolist.entity.ToDoWithParents;
 import com.kakao.todolist.service.ToDoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,20 +25,38 @@ public class ToDoController {
     }
 
     @PutMapping
-    public ResponseEntity<ToDo> saveToDo(@RequestBody ToDo toDo) throws ToDoException {
-        ToDo returnToDo = toDoService.saveToDo(toDo);
+    public ResponseEntity<ToDo> createToDo(@RequestBody ToDoWithParents toDoWithParents) throws ToDoException {
+        ToDo returnToDo = toDoService.saveToDo(toDoWithParents);
         return new ResponseEntity<>(returnToDo, HttpStatus.CREATED);
     }
 
+    @PostMapping("/{toDoId}/{whatToDo}")
+    public ResponseEntity<Void> updateWhatToDo(@PathVariable Integer toDoId, @PathVariable String whatToDo) throws ToDoException {
+        toDoService.updateWhatToDo(toDoId, whatToDo);
+        return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
+    }
+
     @DeleteMapping("/{toDoId}")
-    public ResponseEntity<Void> deleteToDo(@PathVariable String toDoId) throws ToDoException {
+    public ResponseEntity<Void> deleteToDo(@PathVariable Integer toDoId) throws ToDoException {
         toDoService.deleteToDo(toDoId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{toDoId}")
-    public ResponseEntity<ToDo> getToDo(@PathVariable String toDoId) throws ToDoException {
+    public ResponseEntity<ToDo> getToDo(@PathVariable Integer toDoId) throws ToDoException {
         ToDo toDo = toDoService.getToDo(toDoId);
         return new ResponseEntity<>(toDo, HttpStatus.OK);
     }
+
+    @GetMapping("/{toDoId}/checkalldone")
+    public ResponseEntity<Boolean> checkAllDone(@PathVariable Integer toDoId) {
+        return new ResponseEntity<>(toDoService.isLinkedAllDone(toDoId), HttpStatus.OK);
+    }
+
+    @PostMapping("/{toDoId}/done")
+    public ResponseEntity<Void> doneToDo(@PathVariable Integer toDoId) throws ToDoException {
+        toDoService.doneToDo(toDoId);
+        return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
+    }
+
 }

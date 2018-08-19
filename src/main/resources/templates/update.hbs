@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>TODO 수정</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--부트스트랩 css 추가-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <!--custom css 추가-->
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <div class="form-group">
+        <label for="whatToDo">할 일</label>
+        <input type="text" class="form-control" id="whatToDo" placeholder="할 일을 입력하세요" value="{{toDo.whatToDo}}">
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <label for="isProgress">진행여부</label>
+            {{#if toDo.isProgress}}
+                {{#if isLinkedAllDone}}
+                    <button id="isProgress" type="button" class="btn btn-success">진행중</button>
+                {{else}}
+                    <input type="text" class="form-control" id="isProgress" value="진행중" style="text-align:center"readonly>
+                {{/if}}
+            {{else}}
+                <input type="text" class="form-control" id="isProgress" value="완료" style="text-align:center"readonly>
+            {{/if}}
+        </div>
+        <div class="form-group col-md-4"></div>
+        <div class="form-group col-md-4">
+            <label for="linkedToDo">참조된 일</label>
+            <select id="linkedToDo" class="form-control">
+                {{#each linkedToDo}}
+                    <option value="{{id}}">{{whatToDo}}
+                        {{#if isProgress}}
+                            <button id="isProgress" type="button" class="btn btn-progress"> 진행중</button>
+                        {{else}}
+                            <button id="isProgress" type="button" class="btn btn-complete"> 완료</button>
+                        {{/if}}
+                    </option>
+                {{/each}}
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="registerDate">등록일</label>
+            <input type="text" class="form-control" id="registerDate" value="{{toDo.registerDate}}" readonly>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="updateDate">수정일</label>
+            <input type="text" class="form-control" id="lastUpdateDate" value="{{toDo.lastUpdateDate}}" readonly>
+        </div>
+    </div>
+    <button type="button" id="goToList" class="btn btn-secondary" style="margin-top:10px">목록</button>
+    <div class="footer">
+        {{#if isLinkedAllDone}}
+            <button id="deleteToDo" type="submit" class="btn btn-secondary">삭제</button>
+        {{/if}}
+        <button id="updateToDo" type="submit" class="btn btn-primary">수정</button>
+    </div>
+    <div id="validateUpdate" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">알림</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>해야 할 일을 입력해주세요.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="updateDone" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">알림</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>수정이 완료되었습니다.</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="updateConfirm" type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="deleteInform" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">알림</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>삭제하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button id="deleteConfirmButton" type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="deleteDone" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">알림</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>삭제가 완료되었습니다.</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="deleteDoneButton" type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="inform-all-done" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">알림</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>하위 할일을 먼저 마무리지으세요.</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirmLinkedToDo" type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="host-url" hidden>{{hostUrl}}</div>
+
+    <!--부트스트랩 js, jquery 추가-->
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <!-- to_do 관련 js 추가 -->
+    <script src="/js/update.js"></script>
+</body>

@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -29,6 +30,16 @@ public class ToDoRepositoryTest {
 
         assertThat(returnToDo.getId(), is(1));
         assertThat(returnToDo.getWhatToDo(), is("가사일"));
-        assertThat(returnToDo.getStatus(), is("PROGRESS"));
+        assertThat(returnToDo.getIsProgress(), is(true));
+    }
+
+    @Test
+    public void saveToDo() {
+        ToDo toDo = new ToDo();
+        toDo.setWhatToDo("새로운 할 일");
+        ToDo returnToDo = testEntityManager.persist(toDo);
+
+        assertThat(returnToDo.getId(), not(0));
+        assertThat(returnToDo.getWhatToDo(), is("새로운 할 일"));
     }
 }

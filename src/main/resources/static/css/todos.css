@@ -1,0 +1,21 @@
+body {
+    text-align: center;
+}
+
+.list-header {
+    margin-bottom: 30px;
+}
+
+a:link {
+    color: blue;
+}
+
+/* mouse over link */
+a:hover {
+    color: red;
+}
+
+/* selected link */
+a:active {
+    color: blue;
+}

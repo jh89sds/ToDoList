@@ -25,6 +25,10 @@ public class ToDoExceptionHandler {
                 break;
             case DELETE_FAIL:
                 logger.error("Delete Failed");
+                break;
+            case LINKED_NOT_DONE:
+                logger.error("Linked ToDo is not done. Please check linked ToDo");
+                break;
         }
         return new ResponseEntity<>(todoException.getExceptionCase(), HttpStatus.BAD_REQUEST);
     }

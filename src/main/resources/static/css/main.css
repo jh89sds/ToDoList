@@ -1,0 +1,14 @@
+body {
+    width: 900px;
+    margin: 60px auto 0;
+}
+nav {
+    display: flex;
+    justify-content: center;
+}
+
+.footer {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    float: right;
+}

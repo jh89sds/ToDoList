@@ -1,6 +1,7 @@
 package com.kakao.todolist.controller;
 
 import com.kakao.todolist.entity.ToDo;
+import com.kakao.todolist.entity.ToDoWithParents;
 import com.kakao.todolist.service.ToDoService;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
@@ -53,31 +54,35 @@ public class ToDoControllerTest extends ControllerTest {
     }
 
     @Test
-    public void whenSaveToDo_thenCallSaveToDo() throws Exception {
+    public void whenCreateToDo_thenCallSaveToDo() throws Exception {
         ToDo inputToDo = new ToDo();
         inputToDo.setWhatToDo("가사일");
-        inputToDo.setStatus("PROGRESS");
+        inputToDo.setIsProgress(true);
+
+        ToDoWithParents toDoWithParents = new ToDoWithParents();
+        toDoWithParents.setToDo(inputToDo);
+        toDoWithParents.setParents(Lists.newArrayList());
 
         ToDo outputToDo = new ToDo();
         outputToDo.setId(1);
 
-        when(toDoService.saveToDo(ArgumentMatchers.any(ToDo.class))).thenReturn(outputToDo);
+        when(toDoService.saveToDo(ArgumentMatchers.any(ToDoWithParents.class))).thenReturn(outputToDo);
 
         MvcResult mvcResult = mvc.perform(put("/api/todos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(asJsonString(inputToDo)))
+                .content(asJsonString(toDoWithParents)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
         assertThat(mvcResult.getResponse().getContentAsString(), containsString("\"id\":1"));
 
         ArgumentCaptor captor = ArgumentCaptor.forClass(ToDo.class);
-        verify(toDoService).saveToDo(((ToDo) captor.capture()));
+        verify(toDoService).saveToDo(((ToDoWithParents) captor.capture()));
 
-        ToDo argumentValue = (ToDo) captor.getValue();
-        assertThat(argumentValue.getWhatToDo(), is("가사일"));
-        assertThat(argumentValue.getStatus(), is("PROGRESS"));
+        ToDoWithParents argumentValue = (ToDoWithParents) captor.getValue();
+        assertThat(argumentValue.getToDo().getWhatToDo(), is("가사일"));
+        assertThat(argumentValue.getToDo().getIsProgress(), is(true));
     }
 
     @Test
@@ -85,7 +90,7 @@ public class ToDoControllerTest extends ControllerTest {
         mvc.perform(delete("/api/todos/1"))
                 .andExpect(status().isAccepted());
 
-        verify(toDoService).deleteToDo("1");
+        verify(toDoService).deleteToDo(1);
     }
 
     @Test
@@ -93,6 +98,6 @@ public class ToDoControllerTest extends ControllerTest {
         mvc.perform(get("/api/todos/1"))
                 .andExpect(status().isOk());
 
-        verify(toDoService).getToDo("1");
+        verify(toDoService).getToDo(1);
     }
 }
